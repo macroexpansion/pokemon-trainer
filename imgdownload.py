@@ -9,7 +9,7 @@ response = gg.googleimagesdownload()
 
 arguments = {
     'keywords': 'pikachu',
-    'limit': 10,
+    'limit': 10, # number of images to download
     'print_urls': False,
     'format': 'jpg, png',
 }
