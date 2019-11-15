@@ -1,0 +1,2 @@
+# cvision-cnn
+pokemon-trainer
