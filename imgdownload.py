@@ -8,10 +8,10 @@ from google_images_download import google_images_download as gg
 response = gg.googleimagesdownload()
 
 arguments = {
-    'keywords': 'pikachu',
+    'keywords': 'pikachu, bulbasaur',
     'limit': 10, # number of images to download
     'print_urls': False,
-    'format': 'jpg, png',
+    'format': 'jpg'
 }
 
 paths = response.download(arguments)
