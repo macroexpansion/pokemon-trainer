@@ -112,6 +112,6 @@ def train_model(model, criterion, optimizer, num_epochs=50):
     print('Best val Acc: {:4f}'.format(best_acc))
 
 
-
-train_model(model, criterion, optimizer, num_epochs=50)
+if __name__ == '__main__':
+    train_model(model, criterion, optimizer, num_epochs=50)
             
