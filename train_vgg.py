@@ -5,12 +5,14 @@ from dataloader import dataloader
 import copy
 from torch.utils.tensorboard import SummaryWriter
 
-# from train_model import train_model
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 use_gpu = torch.cuda.is_available()
 if use_gpu:
     print("Using CUDA")
+
+# transforms.Normalize(mean=[0.485, 0.456, 0.406],
+#                      std=[0.229, 0.224, 0.225]) 
 
 transform = transforms.Compose([
     transforms.Resize(256),
@@ -19,11 +21,13 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], std=[0.32218322, 0.27970782, 0.3134101])
 ])
 
-train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=True, batch_size=32, transform=transform)
+train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=True, 
+                                                                                        batch_size=32, 
+                                                                                        transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
 
 model = models.vgg16()
-model.classifier[-1] = torch.nn.Linear(in_features=4096, out_features=9)
+model.classifier[-1] = nn.Linear(in_features=4096, out_features=9)
 # print(model)
 
 if use_gpu:
@@ -100,11 +104,9 @@ def train_model(model, criterion, optimizer, num_epochs=50):
     print('Training complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
     print('Best val Acc: {:4f}'.format(best_acc))
 
-    # model.load_state_dict(best_model_wts)
-    # return model
 
 # def test_model(model):
 #     with
 
-model_fit = train_model(model, criterion, optimizer, num_epochs=50)
+train_model(model, criterion, optimizer, num_epochs=50)
             
