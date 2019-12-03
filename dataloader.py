@@ -53,13 +53,16 @@ def train_valid_split(dataset, valid_split_size=0.2, shuffle=True, random_seed=7
     return train_sampler, len(train_indices), valid_sampler, len(valid_indices)
 
 
-def dataloader(batch_size=16, transform=ToTensor()):
-    train_data = ImageFolder(root='pkm/train/', transform=transform)
+def dataloader(colab=True, batch_size=16, transform=ToTensor()):
+    path = 'pkm/'
+    if colab:
+        path = '../drive/My Drive/Colab Notebooks/pkm/'
+    train_data = ImageFolder(root=path + 'train/', transform=transform)
     train_sampler, train_size, valid_sampler, valid_size = train_valid_split(train_data)
     train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler)
     valid_loader = DataLoader(train_data, batch_size=batch_size, sampler=valid_sampler)
 
-    test_data = ImageFolder(root='pkm/test/', transform=transform)
+    test_data = ImageFolder(root=path + 'test/', transform=transform)
     # print(test_data.targets)
     test_loader = DataLoader(test_data, batch_size=batch_size)
 
