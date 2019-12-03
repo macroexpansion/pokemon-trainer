@@ -11,18 +11,21 @@ use_gpu = torch.cuda.is_available()
 if use_gpu:
     print("Using CUDA")
 
+normalize = transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], std=[0.32218322, 0.27970782, 0.3134101])
 transform = {
     'train': transforms.Compose([
-                transforms.Resize(256),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], std=[0.32218322, 0.27970782, 0.3134101])]),
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        normalize
+    ]),
     'test': transforms.Compose([
-                transforms.Resize(256),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], std=[0.32218322, 0.27970782, 0.3134101])])
-} 
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        normalize
+    ])
+}
 
 train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=True, 
                                                                                         batch_size=32, 
@@ -75,7 +78,7 @@ def train_model(model, criterion, optimizer, num_epochs=50):
                         loss.backward()
                         optimizer.step()
                 
-                running_loss += loss.item() #* inputs.size(0)
+                running_loss += loss.item() * inputs.size(0)
                 running_corrects += torch.sum(preds == labels.data)
 
                 del inputs, labels, outputs, preds
@@ -108,8 +111,19 @@ def train_model(model, criterion, optimizer, num_epochs=50):
     print('Best val Acc: {:4f}'.format(best_acc))
 
 
-# # def test_model(model):
-# #     with
+def evaluate(model):
+    writer = SummaryWriter(comment='--resnet50--test')
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for inputs, labels in testloader:
+            outputs = model(inputs)
+            # print(outputs.data)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+
 
 train_model(model, criterion, optimizer, num_epochs=100)
             
