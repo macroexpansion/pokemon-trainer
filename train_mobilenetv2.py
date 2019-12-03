@@ -26,7 +26,7 @@ transform = {
     ])
 }
 
-train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=True, 
+train_loader, train_size, valid_loader, valid_size, test_loader = dataloader(colab=True, 
                                                                                         batch_size=32, 
                                                                                         transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
@@ -36,9 +36,9 @@ mobilenet.classifier[-1] = nn.Linear(in_features=1280, out_features=9)
 # print(mobilenet)
 
 if use_gpu:
-    resnet.cuda()
+    mobilenet.cuda()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(resnet.parameters(), lr=1e-4)
+optimizer = optim.Adam(mobilenet.parameters(), lr=1e-4)
 
-train_model(resnet, criterion, optimizer, dataloader, train_size, valid_size, model_name='mobilenetv2', num_epochs=100)
+train_model(mobilenet, criterion, optimizer, dataloader, train_size, valid_size, model_name='mobilenetv2', num_epochs=100)

@@ -8,7 +8,7 @@ from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import DataLoader
-from normalization import calc_norm
+from utils import calc_norm
 
 def datacounter(root='pkm/train/'):
     classes = ['bulbasaur', 'charmander', 'jigglypuff', 'magikarp', 'mudkip', 'pikachu', 'psyduck', 'snorlax', 'squirtle']
@@ -67,7 +67,7 @@ def dataloader(colab=True, batch_size=16, transform={'train': transforms.ToTenso
     test_data = ImageFolder(root=path + 'test/', transform=transform['test'])
     test_loader = DataLoader(test_data, batch_size=batch_size)
 
-    return train_loader, train_size, valid_loader, valid_size, test_loader, len(test_data)
+    return train_loader, train_size, valid_loader, valid_size, test_loader
 
 if __name__ == '__main__':
     # dataplot(y_train, y_test)

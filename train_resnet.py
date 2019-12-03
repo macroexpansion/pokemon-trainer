@@ -25,7 +25,7 @@ transform = {
     ])
 }
 
-train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=True, 
+train_loader, train_size, valid_loader, valid_size, test_loader = dataloader(colab=True, 
                                                                                         batch_size=32, 
                                                                                         transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
