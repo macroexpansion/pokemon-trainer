@@ -5,7 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 def evaluate(model, test_loader, path, model_name='weights'):
-    writer = SummaryWriter(comment='--resnet50--evaluate')
+    writer = SummaryWriter(comment='--{}--evaluate'.format(model_name))
     
     model.load_state_dict(torch.load(path))
     model.eval()

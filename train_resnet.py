@@ -1,9 +1,6 @@
-import time
 import torch, torch.nn as nn, torch.optim as optim
 from torchvision import transforms, models
 from dataloader import dataloader
-import copy
-from torch.utils.tensorboard import SummaryWriter
 from train_model import train_model
 from evaluate import evaluate
 
@@ -33,15 +30,15 @@ train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dat
                                                                                         transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
 
-model = models.resnet50()
-model.fc = nn.Linear(in_features=2048, out_features=9)
-# print(model)
+resnet = models.resnet50()
+resnet.fc = nn.Linear(in_features=2048, out_features=9)
+# print(resnet)
 
 if use_gpu:
-    model.cuda()
+    resnet.cuda()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=1e-4)
+optimizer = optim.Adam(resnet.parameters(), lr=1e-4)
 
-train_model(model, criterion, optimizer, dataloader, train_size, valid_size, model_name='resnet50', num_epochs=100)
+train_model(resnet, criterion, optimizer, dataloader, train_size, valid_size, model_name='resnet50', num_epochs=100)
             
