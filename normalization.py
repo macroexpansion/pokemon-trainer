@@ -27,3 +27,7 @@ def calc_norm(dataset):
     print(pop_mean)
     print(pop_std0)
     print(pop_std1)
+
+    # [0.6855248  0.68901044 0.6142709 ] mean
+    # [0.32218283 0.27970755 0.31340986] std0
+    # [0.32218322 0.27970782 0.3134101 ] std1

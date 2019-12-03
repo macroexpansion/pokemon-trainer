@@ -5,7 +5,7 @@ import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from torchvision.datasets import ImageFolder
-from torchvision.transforms import ToTensor, ToPILImage
+from torchvision import transforms
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import DataLoader
 from normalization import calc_norm
@@ -53,22 +53,21 @@ def train_valid_split(dataset, valid_split_size=0.2, shuffle=True, random_seed=7
     return train_sampler, len(train_indices), valid_sampler, len(valid_indices)
 
 
-def dataloader(colab=True, batch_size=16, transform=ToTensor()):
+def dataloader(colab=True, batch_size=16, transform=transforms.ToTensor()):
     path = '../pkm/'
     if colab:
         path = '../drive/My Drive/Colab Notebooks/pkm/'
+        
     train_data = ImageFolder(root=path + 'train/', transform=transform)
-    calc_norm(train_data)
-    # train_sampler, train_size, valid_sampler, valid_size = train_valid_split(train_data)
-    # print(len(train_data))
-    # print(train_size)
-    # train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler)
-    # valid_loader = DataLoader(train_data, batch_size=batch_size, sampler=valid_sampler)
+    # calc_norm(train_data)
+    train_sampler, train_size, valid_sampler, valid_size = train_valid_split(train_data)
+    train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler)
+    valid_loader = DataLoader(train_data, batch_size=batch_size, sampler=valid_sampler)
 
-    # test_data = ImageFolder(root=path + 'test/', transform=transform)
-    # test_loader = DataLoader(test_data, batch_size=batch_size)
+    test_data = ImageFolder(root=path + 'test/', transform=transform)
+    test_loader = DataLoader(test_data, batch_size=batch_size)
 
-    # return train_loader, train_size, #valid_loader, valid_size, test_loader, len(test_data)
+    return train_loader, train_size, #valid_loader, valid_size, test_loader, len(test_data)
 
 if __name__ == '__main__':
     # dataplot(y_train, y_test)

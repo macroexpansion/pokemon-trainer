@@ -17,7 +17,7 @@ transform = transforms.Compose([
     transforms.Resize(256),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], std=[0.32218322, 0.27970782, 0.3134101])
 ])
 
 train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=False, batch_size=32, transform=transform)
@@ -105,7 +105,7 @@ def train_model(model, criterion, optimizer, num_epochs=50):
     # return model
 
 # def test_model(model):
-#     with 
+#     with
 
-model_fit = train_model(model, criterion, optimizer, num_epochs=100)
+model_fit = train_model(model, criterion, optimizer, num_epochs=50)
             
