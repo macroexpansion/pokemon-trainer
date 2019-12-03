@@ -54,7 +54,7 @@ def train_valid_split(dataset, valid_split_size=0.2, shuffle=True, random_seed=7
 
 
 def dataloader(colab=True, batch_size=16, transform=ToTensor()):
-    path = 'pkm/'
+    path = '../pkm/'
     if colab:
         path = '../drive/My Drive/Colab Notebooks/pkm/'
     train_data = ImageFolder(root=path + 'train/', transform=transform)
