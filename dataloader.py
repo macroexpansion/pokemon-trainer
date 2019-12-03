@@ -57,7 +57,7 @@ def dataloader(colab=True, batch_size=16, transform=transforms.ToTensor()):
     path = '../pkm/'
     if colab:
         path = '../drive/My Drive/Colab Notebooks/pkm/'
-        
+
     train_data = ImageFolder(root=path + 'train/', transform=transform)
     # calc_norm(train_data)
     train_sampler, train_size, valid_sampler, valid_size = train_valid_split(train_data)
@@ -67,11 +67,10 @@ def dataloader(colab=True, batch_size=16, transform=transforms.ToTensor()):
     test_data = ImageFolder(root=path + 'test/', transform=transform)
     test_loader = DataLoader(test_data, batch_size=batch_size)
 
-    return train_loader, train_size, #valid_loader, valid_size, test_loader, len(test_data)
+    return train_loader, train_size, valid_loader, valid_size, test_loader, len(test_data)
 
 if __name__ == '__main__':
     # dataplot(y_train, y_test)
     dataloader(colab=False)
-
 
     pass

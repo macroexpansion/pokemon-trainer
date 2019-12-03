@@ -1,12 +1,11 @@
 import time
-from comet_ml import Experiment
 import torch, torch.nn as nn, torch.optim as optim
 from torchvision import transforms, models
 from dataloader import dataloader
 import copy
 from torch.utils.tensorboard import SummaryWriter
 
-from train_model import train_model
+# from train_model import train_model
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 use_gpu = torch.cuda.is_available()
@@ -20,7 +19,7 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], std=[0.32218322, 0.27970782, 0.3134101])
 ])
 
-train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=False, batch_size=32, transform=transform)
+train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=True, batch_size=32, transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
 
 model = models.vgg16()
