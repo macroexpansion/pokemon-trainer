@@ -17,7 +17,7 @@ transform = transforms.Compose([
     transforms.Resize(256),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 train_loader, train_size, valid_loader, valid_size, test_loader, test_size = dataloader(colab=False, batch_size=32, transform=transform)
@@ -31,9 +31,9 @@ if use_gpu:
     model.cuda()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=1e-3)
+optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-def train_model(model, criterion, optimizer, num_epochs=70):
+def train_model(model, criterion, optimizer, num_epochs=50):
 
     writer = SummaryWriter(comment='--vgg16')
     since = time.time()
@@ -91,7 +91,9 @@ def train_model(model, criterion, optimizer, num_epochs=70):
 
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
+                print('Best val Acc: {:4f}'.format(best_acc))
+                torch.save(model.state_dict(), 'weiths/vgg16.pt')
+                # best_model_wts = copy.deepcopy(model.state_dict())
 
         print()
 
@@ -99,8 +101,8 @@ def train_model(model, criterion, optimizer, num_epochs=70):
     print('Training complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
     print('Best val Acc: {:4f}'.format(best_acc))
 
-    model.load_state_dict(best_model_wts)
-    return model
+    # model.load_state_dict(best_model_wts)
+    # return model
 
 # def test_model(model):
 #     with 
