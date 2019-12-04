@@ -38,7 +38,7 @@ train_loader, train_size, valid_loader, valid_size, test_loader = dataloader(col
                                                                 transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
 
-vgg = models.vgg16_bn()
+vgg = models.vgg16_bn(pretrained=True)
 vgg.classifier[-1] = nn.Linear(in_features=4096, out_features=9)
 # print(vgg)
 
@@ -48,5 +48,5 @@ if use_gpu:
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(vgg.parameters(), lr=1e-4)
 
-# train_model(vgg, criterion, optimizer, dataloader, train_size, valid_size, model_name='vgg16_bn_augment', num_epochs=100)
-evaluate(vgg, test_loader, model_name='vgg16_bn_augment.pt')
+train_model(vgg, criterion, optimizer, dataloader, train_size, valid_size, model_name='vgg16_bn_augment', num_epochs=100)
+# evaluate(vgg, test_loader, model_name='vgg16_bn_augment.pt')
