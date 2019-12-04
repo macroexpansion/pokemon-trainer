@@ -64,10 +64,19 @@ def dataloader(colab=True, batch_size=16, transform={'train': transforms.ToTenso
     train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler)
     valid_loader = DataLoader(train_data, batch_size=batch_size, sampler=valid_sampler)
 
+    return train_loader, train_size, valid_loader, valid_size
+
+
+def testloader(colab=True, batch_size=64, transform={'train': transforms.ToTensor(), 'test': transforms.ToTensor()}):
+    path = '../pkm/'
+    if colab:
+        path = '../drive/My Drive/Colab Notebooks/pkm/'
+
     test_data = ImageFolder(root=path + 'test/', transform=transform['test'])
     test_loader = DataLoader(test_data, batch_size=batch_size)
 
-    return train_loader, train_size, valid_loader, valid_size, test_loader
+    return test_loader
+
 
 if __name__ == '__main__':
     # dataplot(y_train, y_test)
