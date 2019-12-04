@@ -2,14 +2,15 @@ import time
 import torch, torch.nn as nn, torch.optim as optim
 from torchvision import transforms, models
 from torch.utils.tensorboard import SummaryWriter
-from dataloader import testloader
 
 
-def evaluate(model, model_name='weights.pt'):
+def evaluate(model, test_loader, model_name='weights.pt'):
+    if torch.cuda.is_available():
+        print("Evaluate Using CUDA")
+
     path = '../drive/My Drive/Colab Notebooks/' + model_name
     writer = SummaryWriter(comment='--{}--evaluate'.format(model_name))
     
-    test_loader = testloader()
     model.load_state_dict(torch.load(path))
     model.eval()
     
