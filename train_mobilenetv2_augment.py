@@ -55,4 +55,5 @@ if use_gpu:
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(mobilenet.parameters(), lr=1e-4)
 
-train_model(mobilenet, criterion, optimizer, dataloader, train_size, valid_size, model_name='mobilenetv2_augment', num_epochs=100)
+# train_model(mobilenet, criterion, optimizer, dataloader, train_size, valid_size, model_name='mobilenetv2_augment', num_epochs=100)
+evaluate(mobilenet, test_loader, model_name='mobilenetv2_augment.pt')

@@ -27,7 +27,7 @@ transform = {
     ])
 } 
 
-train_loader, train_size, valid_loader, valid_size = dataloader(colab=True, 
+train_loader, train_size, valid_loader, valid_size, test_loader = dataloader(colab=True, 
                                                                 batch_size=32, 
                                                                 transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
@@ -42,5 +42,5 @@ if use_gpu:
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(vgg.parameters(), lr=1e-4)
 
-train_model(vgg, criterion, optimizer, dataloader, train_size, valid_size, model_name='vgg16', num_epochs=50)
-            
+# train_model(vgg, criterion, optimizer, dataloader, train_size, valid_size, model_name='vgg16', num_epochs=50)
+evaluate(vgg, test_loader, model_name='vgg16.pt')

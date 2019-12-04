@@ -25,7 +25,7 @@ transform = {
     ])
 }
 
-train_loader, train_size, valid_loader, valid_size = dataloader(colab=True, 
+train_loader, train_size, valid_loader, valid_size, test_loader = dataloader(colab=True, 
                                                                 batch_size=32, 
                                                                 transform=transform)
 dataloader = {'train': train_loader, 'val': valid_loader}
@@ -41,4 +41,4 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(resnet.parameters(), lr=1e-4)
 
 # train_model(resnet, criterion, optimizer, dataloader, train_size, valid_size, model_name='resnet50', num_epochs=100)
-evaluate(resnet, model_name='resnet50')
+evaluate(resnet, test_loader, model_name='resnet50.pt')
