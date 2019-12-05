@@ -53,6 +53,7 @@ def train_model(model, loss, optimizer, dataloader, train_size, valid_size, mode
             data_size = train_size if phase == 'train' else valid_size
             epoch_loss = running_loss / data_size
             epoch_acc = running_corrects / data_size
+            print(epoch_acc.dtype)
 
             if phase == 'train':
                 writer.add_scalar('Loss/train', epoch_loss, epoch)
@@ -65,7 +66,8 @@ def train_model(model, loss, optimizer, dataloader, train_size, valid_size, mode
             print('\ttime', time.time() - start)
 
             if phase == 'val':
-                if es.step(epoch_acc):
+                acc = epoch_acc.cpu()
+                if es.step(acc):
                     time_elapsed = time.time() - since
                     print('Early Stopping')
                     print('Training complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
