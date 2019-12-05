@@ -56,18 +56,19 @@ class ImgAugmenter:
 
 
 class EarlyStopping(object):
-    def __init__(self, mode='min', min_delta=0, patience=10, percentage=False):
+    def __init__(self, mode='min', delta=0, patience=10, percentage=False):
         self.mode = mode
-        self.min_delta = min_delta
+        self.delta = delta
         self.patience = patience
         self.best = None
         self.num_bad_epochs = 0
         self.is_better = None
-        self._init_is_better(mode, min_delta, percentage)
+        self._init_is_better(percentage)
 
         if patience == 0:
             self.is_better = lambda a, b: True
             self.step = lambda a: False
+
 
     def step(self, metrics):
         if self.best is None:
@@ -88,19 +89,20 @@ class EarlyStopping(object):
 
         return False
 
-    def _init_is_better(self, mode, min_delta, percentage):
-        if mode not in {'min', 'max'}:
-            raise ValueError('mode ' + mode + ' is unknown!')
+
+    def _init_is_better(self, percentage):
+        if self.mode not in ['min', 'max']:
+            raise ValueError('mode ' + self.mode + ' is unknown!')
         if not percentage:
-            if mode == 'min':
-                self.is_better = lambda a, best: a < best - min_delta
-            if mode == 'max':
-                self.is_better = lambda a, best: a > best + min_delta
+            if self.mode == 'min':
+                self.is_better = lambda a, best: a < best - self.delta
+            if self.mode == 'max':
+                self.is_better = lambda a, best: a > best + self.delta
         else:
-            if mode == 'min':
-                self.is_better = lambda a, best: a < best - (best * min_delta / 100)
-            if mode == 'max':
-                self.is_better = lambda a, best: a > best + (best * min_delta / 100)
+            if self.mode == 'min':
+                self.is_better = lambda a, best: a < best - (best * self.delta / 100)
+            if self.mode == 'max':
+                self.is_better = lambda a, best: a > best + (best * self.delta / 100)
 
 
 if __name__ == '__main__':

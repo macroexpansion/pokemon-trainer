@@ -10,7 +10,7 @@ from utils import EarlyStopping
 def train_model(model, loss, optimizer, dataloader, train_size, valid_size, model_name='weights', num_epochs=50):
 
     writer = SummaryWriter(comment='--{}'.format(model_name))
-    es = EarlyStopping(patience=5)
+    es = EarlyStopping(mode='max', patience=5)
     since = time.time()
 
     # best_model_wts = copy.deepcopy(model.state_dict())
