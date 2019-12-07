@@ -10,6 +10,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import DataLoader
 from utils import calc_norm
 
+
 def datacounter(root='pkm/train/'):
     classes = ['bulbasaur', 'charmander', 'jigglypuff', 'magikarp', 'mudkip', 'pikachu', 'psyduck', 'snorlax', 'squirtle']
     X, y = [], []
@@ -54,24 +55,39 @@ def train_valid_split(dataset, valid_split_size=0.2, shuffle=True, random_seed=7
 
 
 def dataloader(colab=True, batch_size=16, transform={'train': transforms.ToTensor(), 'test': transforms.ToTensor()}):
-    path = '../pkm/'
+    path = 'pkm/'
     if colab:
         path = '../drive/My Drive/Colab Notebooks/pkm/'
 
     train_data = ImageFolder(root=path + 'train/', transform=transform['train'])
     # calc_norm(train_data)
+    print(train_data.classes)
     train_sampler, train_size, valid_sampler, valid_size = train_valid_split(train_data)
     train_loader = DataLoader(train_data, batch_size=batch_size, sampler=train_sampler)
     valid_loader = DataLoader(train_data, batch_size=batch_size, sampler=valid_sampler)
 
-    test_data = ImageFolder(root=path + 'test/', transform=transform['test'])
+    return train_loader, train_size, valid_loader, valid_size
+
+
+preprocess = transforms.Compose([transforms.Resize(256), 
+                                 transforms.CenterCrop(224), 
+                                 transforms.ToTensor(), 
+                                 transforms.Normalize(mean=[0.6855248, 0.68901044, 0.6142709], 
+                                                      std=[0.32218322, 0.27970782, 0.3134101])])
+
+def testloader(colab=True, batch_size=64, transform=preprocess):
+    path = 'pkm/'
+    if colab:
+        path = '../drive/My Drive/Colab Notebooks/pkm/'
+
+    test_data = ImageFolder(root=path + 'test/', transform=transform)
     test_loader = DataLoader(test_data, batch_size=batch_size)
 
-    return train_loader, train_size, valid_loader, valid_size, test_loader
+    return test_loader
 
 
 if __name__ == '__main__':
     # dataplot(y_train, y_test)
     dataloader(colab=False)
-
+    # testloader(colab=False)
     pass

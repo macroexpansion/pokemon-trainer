@@ -1,4 +1,7 @@
-import torch 
+import torch
+import nets
+from dataloader import testloader
+from sklearn.metrics import classification_report
 
 
 def predict(model, test_loader, model_name='weights.pt'):
@@ -26,3 +29,18 @@ def predict(model, test_loader, model_name='weights.pt'):
             labels_ = torch.cat((labels_, labels), dim=0)
 
     return preds_, labels_
+
+
+if __name__ == '__main__':
+    # net = nets.VGG16(pretrained=False)
+    net = nets.VGG16_BN(pretrained=True)
+    # net = nets.ResNet50(pretrained=False)
+    # net = nets.MobileNetv2(pretrained=False)
+
+    test_loader = testloader(colab=True)
+    pred, truth = predict(net, test_loader, model_name='vgg16_bn_pretrain_augment_96.pt')
+    
+    target_names = ['bulbasaur', 'charmander', 'jigglypuff', 'magikarp', 'mudkip', 'pikachu', 'psyduck', 'snorlax', 'squirtle']
+    report = classification_report(truth, pred, target_names=target_names)
+    print(report)
+    

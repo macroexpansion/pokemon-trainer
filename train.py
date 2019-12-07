@@ -44,22 +44,26 @@ augmented = {
     ])
 }
 
-train_loader, train_size, valid_loader, valid_size, test_loader = dataloader(colab=True, 
-                                                                             batch_size=64, 
-                                                                             transform=preprocess)
+train_loader, train_size, valid_loader, valid_size = dataloader(colab=True, 
+                                                                batch_size=64, 
+                                                                transform=preprocess)
 dataloader = {'train': train_loader, 'val': valid_loader}
 
-# net = nets.VGG16(pretrained=False)
-net = nets.VGG16_BN(pretrained=False)
-# net = nets.ResNet50(pretrained=False)
-# net = nets.MobileNetv2(pretrained=False)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(mobilenet.parameters(), lr=1e-4)
 
-train_model(net, criterion, optimizer, dataloader, train_size, valid_size, 
-            model_name='mobilenetv2_augment', 
-            num_epochs=100)
 
-evaluate(net, test_loader, 
-         model_name='mobilenetv2_augment.pt')
+# evaluate(net, test_loader, 
+#          model_name='mobilenetv2_augment.pt')
+
+
+if __name__ == '__main__':
+    # net = nets.VGG16(pretrained=False)
+    net = nets.VGG16_BN(pretrained=False)
+    # net = nets.ResNet50(pretrained=False)
+    # net = nets.MobileNetv2(pretrained=False)
+
+    train_model(net, criterion, optimizer, dataloader, train_size, valid_size, 
+                model_name='mobilenetv2_augment', 
+                num_epochs=100)
