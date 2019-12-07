@@ -1,11 +1,16 @@
 import torch
 import nets
 from dataloader import testloader
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def predict(model, test_loader, model_name='weights.pt'):
     use_gpu = torch.cuda.is_available()
+    if use_gpu:
+        print('Using CUDA')
     device = 'cuda:0' if use_gpu else 'cpu'
 
     path = '../drive/My Drive/Colab Notebooks/' + model_name
@@ -28,6 +33,8 @@ def predict(model, test_loader, model_name='weights.pt'):
             preds_ = torch.cat((preds_, predicted), dim=0)
             labels_ = torch.cat((labels_, labels), dim=0)
 
+    preds_ = preds_.cpu()
+    labels_ = labels_.cpu()
     return preds_, labels_
 
 
@@ -38,9 +45,14 @@ if __name__ == '__main__':
     # net = nets.MobileNetv2(pretrained=False)
 
     test_loader = testloader(colab=True)
-    pred, truth = predict(net, test_loader, model_name='vgg16_bn_pretrain_augment_96.pt')
+    pred, truth = predict(net, test_loader, model_name='vgg16_bn_pretrained_augmented_96batch.pt')
     
     target_names = ['bulbasaur', 'charmander', 'jigglypuff', 'magikarp', 'mudkip', 'pikachu', 'psyduck', 'snorlax', 'squirtle']
     report = classification_report(truth, pred, target_names=target_names)
     print(report)
+    matrix = confusion_matrix(truth, pred)
+    df = pd.DataFrame(matrix, index = [i for i in target_names], columns = [i for i in target_names])
+    fig = plt.figure(figsize = (10,7))
+    sns.heatmap(df, annot=True, cbar=False, cmap="YlGnBu")
+    plt.savefig('matrix')
     
