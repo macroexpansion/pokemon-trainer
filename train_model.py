@@ -8,12 +8,16 @@ from utils import EarlyStopping
 
 
 def train_model(model, loss, optimizer, dataloader, train_size, valid_size, model_name='weights', num_epochs=50):
+    use_gpu = torch.cuda.is_available()
+    device = 'cuda:0' if use_gpu else 'cpu'
+    if use_gpu:
+        print("Using CUDA")
+        model.cuda()
 
     writer = SummaryWriter(comment='--{}'.format(model_name))
     es = EarlyStopping(mode='max', patience=5)
     since = time.time()
 
-    # best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
 
     for epoch in range(num_epochs):
@@ -31,8 +35,8 @@ def train_model(model, loss, optimizer, dataloader, train_size, valid_size, mode
             running_corrects = 0.
 
             for inputs, labels in dataloader[phase]:
-                inputs = inputs.to('cuda:0')
-                labels = labels.to('cuda:0')
+                inputs = inputs.to(device)
+                labels = labels.to(device)
 
                 optimizer.zero_grad()
                 with torch.set_grad_enabled(phase == 'train'):
