@@ -2,6 +2,8 @@ import time
 import torch, torch.nn as nn, torch.optim as optim
 from torchvision import transforms, models
 from torch.utils.tensorboard import SummaryWriter
+import nets
+from dataloader import testloader
 
 
 def evaluate(model, test_loader, model_name='weights.pt'):
@@ -26,9 +28,7 @@ def evaluate(model, test_loader, model_name='weights.pt'):
             labels = labels.cuda()
 
             outputs = model(inputs)
-            # print(outputs.device, )
             _, predicted = torch.max(outputs.data, 1)
-            # print(predicted.device, labels.device)
             total += labels.size(0)
             correct += (predicted == labels.data).sum().item()
     print('Accuracy:', 100 * correct / total)
@@ -36,4 +36,10 @@ def evaluate(model, test_loader, model_name='weights.pt'):
 
 
 if __name__ == '__main__':
-    pass
+    # net = nets.VGG16(pretrained=False)
+    net = nets.VGG16_BN(pretrained=True)
+    # net = nets.ResNet50(pretrained=False)
+    # net = nets.MobileNetv2(pretrained=False)
+
+    test_loader = testloader(colab=True)
+    evaluate(net, test_loader, model_name='vgg16_bn_pretrained_augmented_96batch.pt')
