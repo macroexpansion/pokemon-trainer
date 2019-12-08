@@ -42,7 +42,7 @@ def get_prediction(model, test_loader, model_name='weights.pt'):
         print('Using CUDA')
     device = 'cuda:0' if use_gpu else 'cpu'
 
-    path = '../drive/My Drive/Colab Notebooks/' + model_name
+    path = '../drive/My Drive/Colab Notebooks/weights/' + model_name
     
     model.load_state_dict(torch.load(path))
     model.eval()
