@@ -1,4 +1,5 @@
 import torch, torch.nn as nn, torch.optim as optim
+from torchvision import transforms
 import nets
 from dataloader import dataloader
 from train_model import train_model
@@ -50,19 +51,15 @@ train_loader, train_size, valid_loader, valid_size = dataloader(colab=True,
 dataloader = {'train': train_loader, 'val': valid_loader}
 
 
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(mobilenet.parameters(), lr=1e-4)
-
-
-# evaluate(net, test_loader, 
-#          model_name='mobilenetv2_augment.pt')
-
-
 if __name__ == '__main__':
     # net = nets.VGG16(pretrained=False)
-    net = nets.VGG16_BN(pretrained=False)
+    # net = nets.VGG16_BN(pretrained=False)
     # net = nets.ResNet50(pretrained=False)
-    # net = nets.MobileNetv2(pretrained=False)
+    net = nets.MobileNetV2(pretrained=False)
+    # net = nets.MobileNetV2_Normal(pretrained=False)
+
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(net.parameters(), lr=5e-4)
 
     train_model(net, criterion, optimizer, dataloader, train_size, valid_size, 
                 model_name='mobilenetv2_augment', 

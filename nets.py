@@ -37,6 +37,17 @@ def MobileNetV2(pretrained=False):
     return net
 
 
+def MobileNetV2_Normal(pretrained=False):
+    net = models.mobilenet_v2(pretrained=pretrained)
+
+    for param in net.parameters():
+        param.requires_grad = False
+
+    net.classifier[-1] = nn.Linear(in_features=1280, out_features=9) 
+
+    return net
+
+
 if __name__ == '__main__':
     net = MobileNetV2()
     print(net)
