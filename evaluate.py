@@ -5,6 +5,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 
 def evaluate(model, test_loader, model_name='weights.pt'):
@@ -42,9 +43,12 @@ def get_prediction(model, test_loader, model_name='weights.pt'):
         print('Using CUDA')
     device = 'cuda:0' if use_gpu else 'cpu'
 
-    path = '../drive/My Drive/Colab Notebooks/weights/' + model_name
+    path_ = '../drive/My Drive/Colab Notebooks/weights/' + model_name
+    if not os.path.exists(path_):
+        print('alo')
+        path_ = 'weights/' + model_name
     
-    model.load_state_dict(torch.load(path))
+    model.load_state_dict(torch.load(path_))
     model.eval()
 
     if use_gpu:
