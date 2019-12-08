@@ -18,6 +18,14 @@ def VGG16_BN(pretrained=False):
 
 def ResNet50(pretrained=False):
     net = models.resnet50(pretrained=pretrained)
+    net.fc = nn.Sequential(nn.Dropout(0.3),
+                           nn.Linear(in_features=2048, out_features=9))
+
+    return net
+
+
+def ResNet50_Normal(pretrained=False):
+    net = models.resnet50(pretrained=pretrained)
     net.fc = nn.Linear(in_features=2048, out_features=9)
 
     return net
@@ -49,5 +57,5 @@ def MobileNetV2_Normal(pretrained=False):
 
 
 if __name__ == '__main__':
-    net = MobileNetV2()
+    net = ResNet50()
     print(net)

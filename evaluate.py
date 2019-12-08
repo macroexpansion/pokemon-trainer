@@ -71,6 +71,7 @@ if __name__ == '__main__':
     # net = nets.VGG16(pretrained=False)
     # net = nets.VGG16_BN(pretrained=True)
     # net = nets.ResNet50(pretrained=False)
+    # net = nets.ResNet50_Normal(pretrained=False)
     # net = nets.MobileNetV2(pretrained=False)
     net = nets.MobileNetV2_Normal(pretrained=False)
     
